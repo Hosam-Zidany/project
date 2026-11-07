@@ -1,0 +1,19 @@
+# secrets / environment
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# database files
+*.bak
+*.mdf
+*.ldf
+
+# generated CSVs (can be re-created by running the scripts).
+# NOTE: outputs/report.txt IS committed so supervisors can read results without a database.
+**/outputs/*.csv
+
+.idea/
+.vscode/
+.DS_Store
