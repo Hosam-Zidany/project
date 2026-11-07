@@ -1,0 +1,388 @@
+##########################################################################################
+Schema overview
+folder: 01_schema_overview   |   run at: 2026-11-07 20:54
+##########################################################################################
+
+==========================================================================================
+1. Tables and row counts
+==========================================================================================
+        schema                                 table  row_count
+         Sales                      SalesOrderDetail     121317
+    Production                    TransactionHistory     113443
+    Production             TransactionHistoryArchive      89253
+    Production                             WorkOrder      72591
+    Production                      WorkOrderRouting      67131
+         Sales                      SalesOrderHeader      31465
+         Sales           SalesOrderHeaderSalesReason      27647
+        Person                        BusinessEntity      20777
+        Person                          EmailAddress      19972
+        Person                              Password      19972
+        Person                                Person      19972
+        Person                           PersonPhone      19972
+         Sales                              Customer      19820
+        Person                 BusinessEntityAddress      19614
+        Person                               Address      19614
+         Sales                            CreditCard      19118
+         Sales                      PersonCreditCard      19118
+         Sales                          CurrencyRate      13532
+    Purchasing                   PurchaseOrderDetail       8845
+    Purchasing                   PurchaseOrderHeader       4012
+    Production                       BillOfMaterials       2679
+    Production                      ProductInventory       1069
+           dbo                           DatabaseLog        938
+        Person                 BusinessEntityContact        909
+    Production                    ProductDescription        762
+    Production ProductModelProductDescriptionCulture        762
+         Sales                                 Store        701
+         Sales                   SpecialOfferProduct        538
+    Production                   ProductProductPhoto        504
+    Production                               Product        504
+    Purchasing                         ProductVendor        460
+    Production               ProductListPriceHistory        395
+    Production                    ProductCostHistory        395
+HumanResources                    EmployeePayHistory        316
+HumanResources             EmployeeDepartmentHistory        296
+HumanResources                              Employee        290
+        Person                         CountryRegion        238
+        Person                         StateProvince        181
+         Sales               SalesPersonQuotaHistory        163
+    Production                          ProductModel        128
+         Sales                 CountryRegionCurrency        109
+         Sales                              Currency        105
+    Purchasing                                Vendor        104
+    Production                          ProductPhoto        101
+    Production                           UnitMeasure         38
+    Production                    ProductSubcategory         37
+    Production                       ProductDocument         32
+         Sales                          SalesTaxRate         29
+        Person                           ContactType         20
+         Sales                 SalesTerritoryHistory         17
+         Sales                           SalesPerson         17
+    Production                           ScrapReason         16
+         Sales                          SpecialOffer         16
+HumanResources                            Department         16
+    Production                              Location         14
+HumanResources                          JobCandidate         13
+    Production                              Document         12
+         Sales                        SalesTerritory         10
+         Sales                           SalesReason         10
+    Production                               Culture          8
+    Production              ProductModelIllustration          7
+        Person                           AddressType          6
+    Production                          Illustration          5
+    Purchasing                            ShipMethod          5
+    Production                         ProductReview          4
+    Production                       ProductCategory          4
+        Person                       PhoneNumberType          3
+         Sales                      ShoppingCartItem          3
+HumanResources                                 Shift          3
+           dbo                        AWBuildVersion          1
+           dbo                              ErrorLog          0
+[saved] outputs/tables_row_counts.csv
+
+==========================================================================================
+2. Tables per schema
+==========================================================================================
+        schema  tables
+    Production      25
+         Sales      19
+        Person      13
+HumanResources       6
+    Purchasing       5
+           dbo       3
+[saved] outputs/tables_per_schema.csv
+
+==========================================================================================
+3. Columns of every table (full list saved to CSV)
+==========================================================================================
+schema          table  pos              column data_type  max_len nullable
+   dbo AWBuildVersion    1 SystemInformationID   tinyint      NaN       NO
+   dbo AWBuildVersion    2    Database Version  nvarchar     25.0       NO
+   dbo AWBuildVersion    3         VersionDate  datetime      NaN       NO
+   dbo AWBuildVersion    4        ModifiedDate  datetime      NaN       NO
+   dbo    DatabaseLog    1       DatabaseLogID       int      NaN       NO
+   dbo    DatabaseLog    2            PostTime  datetime      NaN       NO
+   dbo    DatabaseLog    3        DatabaseUser  nvarchar    128.0       NO
+   dbo    DatabaseLog    4               Event  nvarchar    128.0       NO
+   dbo    DatabaseLog    5              Schema  nvarchar    128.0      YES
+   dbo    DatabaseLog    6              Object  nvarchar    128.0      YES
+   dbo    DatabaseLog    7                TSQL  nvarchar     -1.0       NO
+   dbo    DatabaseLog    8            XmlEvent       xml     -1.0       NO
+   dbo       ErrorLog    1          ErrorLogID       int      NaN       NO
+   dbo       ErrorLog    2           ErrorTime  datetime      NaN       NO
+   dbo       ErrorLog    3            UserName  nvarchar    128.0       NO
+... 824 rows in total (showing 15)
+[saved] outputs/all_columns.csv
+
+==========================================================================================
+4. Primary keys
+==========================================================================================
+        schema                     table           pk_column  key_ordinal
+           dbo            AWBuildVersion SystemInformationID            1
+           dbo               DatabaseLog       DatabaseLogID            1
+           dbo                  ErrorLog          ErrorLogID            1
+HumanResources                Department        DepartmentID            1
+HumanResources                  Employee    BusinessEntityID            1
+HumanResources EmployeeDepartmentHistory    BusinessEntityID            1
+HumanResources EmployeeDepartmentHistory           StartDate            2
+HumanResources EmployeeDepartmentHistory        DepartmentID            3
+HumanResources EmployeeDepartmentHistory             ShiftID            4
+HumanResources        EmployeePayHistory    BusinessEntityID            1
+HumanResources        EmployeePayHistory      RateChangeDate            2
+HumanResources              JobCandidate      JobCandidateID            1
+HumanResources                     Shift             ShiftID            1
+        Person                   Address           AddressID            1
+        Person               AddressType       AddressTypeID            1
+... 102 rows in total (showing 15)
+[saved] outputs/primary_keys.csv
+
+==========================================================================================
+5. Foreign keys (the relationships between tables)
+==========================================================================================
+                                                 fk_name                              child_table      child_column              parent_table     parent_column
+                     FK_Employee_Person_BusinessEntityID                  HumanResources.Employee  BusinessEntityID             Person.Person  BusinessEntityID
+    FK_EmployeeDepartmentHistory_Department_DepartmentID HumanResources.EmployeeDepartmentHistory      DepartmentID HumanResources.Department      DepartmentID
+  FK_EmployeeDepartmentHistory_Employee_BusinessEntityID HumanResources.EmployeeDepartmentHistory  BusinessEntityID   HumanResources.Employee  BusinessEntityID
+              FK_EmployeeDepartmentHistory_Shift_ShiftID HumanResources.EmployeeDepartmentHistory           ShiftID      HumanResources.Shift           ShiftID
+         FK_EmployeePayHistory_Employee_BusinessEntityID        HumanResources.EmployeePayHistory  BusinessEntityID   HumanResources.Employee  BusinessEntityID
+               FK_JobCandidate_Employee_BusinessEntityID              HumanResources.JobCandidate  BusinessEntityID   HumanResources.Employee  BusinessEntityID
+                FK_Address_StateProvince_StateProvinceID                           Person.Address   StateProvinceID      Person.StateProvince   StateProvinceID
+              FK_BusinessEntityAddress_Address_AddressID             Person.BusinessEntityAddress         AddressID            Person.Address         AddressID
+      FK_BusinessEntityAddress_AddressType_AddressTypeID             Person.BusinessEntityAddress     AddressTypeID        Person.AddressType     AddressTypeID
+FK_BusinessEntityAddress_BusinessEntity_BusinessEntityID             Person.BusinessEntityAddress  BusinessEntityID     Person.BusinessEntity  BusinessEntityID
+FK_BusinessEntityContact_BusinessEntity_BusinessEntityID             Person.BusinessEntityContact  BusinessEntityID     Person.BusinessEntity  BusinessEntityID
+      FK_BusinessEntityContact_ContactType_ContactTypeID             Person.BusinessEntityContact     ContactTypeID        Person.ContactType     ContactTypeID
+                FK_BusinessEntityContact_Person_PersonID             Person.BusinessEntityContact          PersonID             Person.Person  BusinessEntityID
+                 FK_EmailAddress_Person_BusinessEntityID                      Person.EmailAddress  BusinessEntityID             Person.Person  BusinessEntityID
+                     FK_Password_Person_BusinessEntityID                          Person.Password  BusinessEntityID             Person.Person  BusinessEntityID
+               FK_Person_BusinessEntity_BusinessEntityID                            Person.Person  BusinessEntityID     Person.BusinessEntity  BusinessEntityID
+                  FK_PersonPhone_Person_BusinessEntityID                       Person.PersonPhone  BusinessEntityID             Person.Person  BusinessEntityID
+        FK_PersonPhone_PhoneNumberType_PhoneNumberTypeID                       Person.PersonPhone PhoneNumberTypeID    Person.PhoneNumberType PhoneNumberTypeID
+        FK_StateProvince_CountryRegion_CountryRegionCode                     Person.StateProvince CountryRegionCode      Person.CountryRegion CountryRegionCode
+             FK_StateProvince_SalesTerritory_TerritoryID                     Person.StateProvince       TerritoryID      Sales.SalesTerritory       TerritoryID
+                  FK_BillOfMaterials_Product_ComponentID               Production.BillOfMaterials       ComponentID        Production.Product         ProductID
+            FK_BillOfMaterials_Product_ProductAssemblyID               Production.BillOfMaterials ProductAssemblyID        Production.Product         ProductID
+          FK_BillOfMaterials_UnitMeasure_UnitMeasureCode               Production.BillOfMaterials   UnitMeasureCode    Production.UnitMeasure   UnitMeasureCode
+                              FK_Document_Employee_Owner                      Production.Document             Owner   HumanResources.Employee  BusinessEntityID
+                  FK_Product_ProductModel_ProductModelID                       Production.Product    ProductModelID   Production.ProductModel    ProductModelID
+... 91 rows in total (showing 25)
+[saved] outputs/foreign_keys.csv
+
+==========================================================================================
+6. Foreign keys around the sales tables
+==========================================================================================
+           child_table    child_column              parent_table    parent_column
+        Sales.Customer        PersonID             Person.Person BusinessEntityID
+        Sales.Customer         StoreID               Sales.Store BusinessEntityID
+        Sales.Customer     TerritoryID      Sales.SalesTerritory      TerritoryID
+Sales.SalesOrderDetail       ProductID Sales.SpecialOfferProduct        ProductID
+Sales.SalesOrderDetail    SalesOrderID    Sales.SalesOrderHeader     SalesOrderID
+Sales.SalesOrderDetail  SpecialOfferID Sales.SpecialOfferProduct   SpecialOfferID
+Sales.SalesOrderHeader BillToAddressID            Person.Address        AddressID
+Sales.SalesOrderHeader    CreditCardID          Sales.CreditCard     CreditCardID
+Sales.SalesOrderHeader  CurrencyRateID        Sales.CurrencyRate   CurrencyRateID
+Sales.SalesOrderHeader      CustomerID            Sales.Customer       CustomerID
+Sales.SalesOrderHeader   SalesPersonID         Sales.SalesPerson BusinessEntityID
+Sales.SalesOrderHeader    ShipMethodID     Purchasing.ShipMethod     ShipMethodID
+Sales.SalesOrderHeader ShipToAddressID            Person.Address        AddressID
+Sales.SalesOrderHeader     TerritoryID      Sales.SalesTerritory      TerritoryID
+[saved] outputs/foreign_keys_sales_core.csv
+
+==========================================================================================
+7. Views
+==========================================================================================
+        schema                            view
+HumanResources                       vEmployee
+HumanResources             vEmployeeDepartment
+HumanResources      vEmployeeDepartmentHistory
+HumanResources                   vJobCandidate
+HumanResources          vJobCandidateEducation
+HumanResources         vJobCandidateEmployment
+        Person          vAdditionalContactInfo
+        Person     vStateProvinceCountryRegion
+    Production          vProductAndDescription
+    Production vProductModelCatalogDescription
+    Production       vProductModelInstructions
+    Purchasing            vVendorWithAddresses
+    Purchasing             vVendorWithContacts
+         Sales             vIndividualCustomer
+         Sales             vPersonDemographics
+         Sales                    vSalesPerson
+         Sales  vSalesPersonSalesByFiscalYears
+         Sales             vStoreWithAddresses
+         Sales              vStoreWithContacts
+         Sales          vStoreWithDemographics
+            sl                  vw_BasketItems
+            sl             vw_CustomerOrderSeq
+            sl                    vw_Customers
+            sl              vw_MonthlyCoverage
+            sl                   vw_OrderLines
+            sl                       vw_Orders
+            sl                     vw_Products
+[saved] outputs/views.csv
+
+==========================================================================================
+8. Computed columns (e.g. LineTotal, TotalDue) and their formulas
+==========================================================================================
+        schema               table            column                                                              definition
+HumanResources            Employee OrganizationLevel                                       ([OrganizationNode].[GetLevel]())
+    Production            Document     DocumentLevel                                           ([DocumentNode].[GetLevel]())
+    Production           WorkOrder        StockedQty                                  (isnull([OrderQty]-[ScrappedQty],(0)))
+    Purchasing PurchaseOrderDetail         LineTotal                                 (isnull([OrderQty]*[UnitPrice],(0.00)))
+    Purchasing PurchaseOrderDetail        StockedQty                            (isnull([ReceivedQty]-[RejectedQty],(0.00)))
+    Purchasing PurchaseOrderHeader          TotalDue                           (isnull(([SubTotal]+[TaxAmt])+[Freight],(0)))
+         Sales            Customer     AccountNumber                 (isnull('AW'+[dbo].[ufnLeadingZeros]([CustomerID]),''))
+         Sales    SalesOrderDetail         LineTotal    (isnull(([UnitPrice]*((1.0)-[UnitPriceDiscount]))*[OrderQty],(0.0)))
+         Sales    SalesOrderHeader  SalesOrderNumber (isnull(N'SO'+CONVERT([nvarchar](23),[SalesOrderID]),N'*** ERROR ***'))
+         Sales    SalesOrderHeader          TotalDue                           (isnull(([SubTotal]+[TaxAmt])+[Freight],(0)))
+[saved] outputs/computed_columns.csv
+
+==========================================================================================
+9. DATA DICTIONARY from the database's own MS_Description (answers: what does Status mean?)
+==========================================================================================
+schema          table              column                                             description
+   dbo AWBuildVersion SystemInformationID                 Primary key for AWBuildVersion records.
+   dbo AWBuildVersion    Database Version Version number of the database in 9.yy.mm.dd.00 format.
+   dbo AWBuildVersion         VersionDate              Date and time the record was last updated.
+   dbo AWBuildVersion        ModifiedDate              Date and time the record was last updated.
+   dbo    DatabaseLog       DatabaseLogID                    Primary key for DatabaseLog records.
+   dbo    DatabaseLog            PostTime              The date and time the DDL change occurred.
+   dbo    DatabaseLog        DatabaseUser                The user who implemented the DDL change.
+   dbo    DatabaseLog               Event            The type of DDL statement that was executed.
+   dbo    DatabaseLog              Schema         The schema to which the changed object belongs.
+   dbo    DatabaseLog              Object        The object that was changed by the DDL statment.
+... 461 rows in total (showing 10)
+[saved] outputs/data_dictionary.csv
+
+==========================================================================================
+9b. Key sales columns described
+==========================================================================================
+schema            table            column                                                                                                   description
+ Sales SalesOrderDetail    SpecialOfferID                                                 Promotional code. Foreign key to SpecialOffer.SpecialOfferID.
+ Sales SalesOrderDetail UnitPriceDiscount                                                                                              Discount amount.
+ Sales SalesOrderDetail         LineTotal                             Per product subtotal. Computed as UnitPrice * (1 - UnitPriceDiscount) * OrderQty.
+ Sales SalesOrderHeader            Status Order current status. 1 = In process; 2 = Approved; 3 = Backordered; 4 = Rejected; 5 = Shipped; 6 = Cancelled
+ Sales SalesOrderHeader   OnlineOrderFlag                                        0 = Order placed by sales person. 1 = Order placed online by customer.
+ Sales SalesOrderHeader     SalesPersonID                        Sales person who created the sales order. Foreign key to SalesPerson.BusinessEntityID.
+ Sales SalesOrderHeader       TerritoryID                         Territory in which the sale was made. Foreign key to SalesTerritory.SalesTerritoryID.
+ Sales SalesOrderHeader          SubTotal                  Sales subtotal. Computed as SUM(SalesOrderDetail.LineTotal)for the appropriate SalesOrderID.
+ Sales SalesOrderHeader            TaxAmt                                                                                                   Tax amount.
+ Sales SalesOrderHeader           Freight                                                                                                Shipping cost.
+ Sales SalesOrderHeader          TotalDue                                             Total due from customer. Computed as Subtotal + TaxAmt + Freight.
+[saved] outputs/dictionary_key_sales_columns.csv
+
+==========================================================================================
+10. Tables with Return / Refund in the name (expected: none)
+==========================================================================================
+(no rows)
+
+==========================================================================================
+11. Sample rows: Sales.SalesOrderHeader
+==========================================================================================
+ SalesOrderID  RevisionNumber  OrderDate    DueDate   ShipDate  Status  OnlineOrderFlag SalesOrderNumber PurchaseOrderNumber  AccountNumber  CustomerID  SalesPersonID  TerritoryID  BillToAddressID  ShipToAddressID  ShipMethodID  CreditCardID CreditCardApprovalCode  CurrencyRateID   SubTotal    TaxAmt  Freight   TotalDue Comment                              rowguid ModifiedDate
+        43659              10 2022-05-30 2022-06-11 2022-06-06       5            False          SO43659         PO522145787 10-4020-000676       29825            279            5              985              985             5         16281          105041Vi84182             NaN 20565.6206 1971.5149 616.0984 23153.2339    None 79B65321-39CA-4115-9CBA-8FE0903E12E6   2022-06-06
+        43660              10 2022-05-30 2022-06-11 2022-06-06       5            False          SO43660       PO18850127500 10-4020-000117       29672            279            5              921              921             5          5618          115213Vi29411             NaN  1294.2529  124.2483  38.8276  1457.3288    None 738DC42D-D03B-48A1-9822-F95A67EA7389   2022-06-06
+        43661              10 2022-05-30 2022-06-11 2022-06-06       5            False          SO43661       PO18473189620 10-4020-000442       29734            282            6              517              517             5          1346            85274Vi6854             4.0 32726.4786 3153.7696 985.5530 36865.8012    None D91B9131-18A4-4A11-BC3A-90B6F53E9D74   2022-06-06
+        43662              10 2022-05-30 2022-06-11 2022-06-06       5            False          SO43662       PO18444174044 10-4020-000227       29994            282            6              482              482             5         10456          125295Vi53935             4.0 28832.5289 2775.1646 867.2389 32474.9324    None 4A1ECFC0-CC3A-4740-B028-1C50BB48711C   2022-06-06
+        43663              10 2022-05-30 2022-06-11 2022-06-06       5            False          SO43663       PO18009186470 10-4020-000510       29565            276            4             1073             1073             5          4322           45303Vi22691             NaN   419.4589   40.2681  12.5838   472.3108    None 9B1E7A40-6AE0-4AD3-811C-A64951857C4B   2022-06-06
+
+==========================================================================================
+11. Sample rows: Sales.SalesOrderDetail
+==========================================================================================
+ SalesOrderID  SalesOrderDetailID CarrierTrackingNumber  OrderQty  ProductID  SpecialOfferID  UnitPrice  UnitPriceDiscount  LineTotal                              rowguid ModifiedDate
+        43659                   1          4911-403C-98         1        776               1   2024.994                0.0   2024.994 B207C96D-D9E6-402B-8470-2CC176C42283   2022-05-30
+        43659                   2          4911-403C-98         3        777               1   2024.994                0.0   6074.982 7ABB600D-1E77-41BE-9FE5-B9142CFC08FA   2022-05-30
+        43659                   3          4911-403C-98         1        778               1   2024.994                0.0   2024.994 475CF8C6-49F6-486E-B0AD-AFC6A50CDD2F   2022-05-30
+        43659                   4          4911-403C-98         1        771               1   2039.994                0.0   2039.994 04C4DE91-5815-45D6-8670-F462719FBCE3   2022-05-30
+        43659                   5          4911-403C-98         1        772               1   2039.994                0.0   2039.994 5A74C7D2-E641-438E-A7AC-37BF23280301   2022-05-30
+
+==========================================================================================
+11. Sample rows: Sales.Customer
+==========================================================================================
+ CustomerID PersonID  StoreID  TerritoryID AccountNumber                              rowguid            ModifiedDate
+          1     None      934            1    AW00000001 3F5AE95E-B87D-4AED-95B4-C3797AFCB74F 2025-09-11 11:15:07.263
+          2     None     1028            1    AW00000002 E552F657-A9AF-4A7D-A645-C429D6E02491 2025-09-11 11:15:07.263
+          3     None      642            4    AW00000003 130774B1-DB21-4EF3-98C8-C104BCD6ED6D 2025-09-11 11:15:07.263
+          4     None      932            4    AW00000004 FF862851-1DAA-4044-BE7C-3E85583C054D 2025-09-11 11:15:07.263
+          5     None     1026            4    AW00000005 83905BDC-6F5E-4F71-B162-C98DA069F38A 2025-09-11 11:15:07.263
+
+==========================================================================================
+11. Sample rows: Sales.Store
+==========================================================================================
+ BusinessEntityID                           Name  SalesPersonID                                                                                                                                                                                                                                                                                                                                                                                                                           Demographics                              rowguid            ModifiedDate
+              292           Next-Door Bike Store            279       <StoreSurvey xmlns="http://schemas.microsoft.com/sqlserver/2004/07/adventure-works/StoreSurvey"><AnnualSales>800000</AnnualSales><AnnualRevenue>80000</AnnualRevenue><BankName>United Security</BankName><BusinessType>BM</BusinessType><YearOpened>1996</YearOpened><Specialty>Mountain</Specialty><SquareFeet>21000</SquareFeet><Brands>2</Brands><Internet>ISDN</Internet><NumberEmployees>13</NumberEmployees></StoreSurvey> A22517E3-848D-4EBE-B9D9-7437F3432304 2025-09-11 11:15:07.497
+              294 Professional Sales and Service            276      <StoreSurvey xmlns="http://schemas.microsoft.com/sqlserver/2004/07/adventure-works/StoreSurvey"><AnnualSales>800000</AnnualSales><AnnualRevenue>80000</AnnualRevenue><BankName>International Bank</BankName><BusinessType>BM</BusinessType><YearOpened>1991</YearOpened><Specialty>Touring</Specialty><SquareFeet>18000</SquareFeet><Brands>4+</Brands><Internet>T1</Internet><NumberEmployees>14</NumberEmployees></StoreSurvey> B50CA50B-C601-4A13-B07E-2C63862D71B4 2025-09-11 11:15:07.497
+              296                 Riders Company            277 <StoreSurvey xmlns="http://schemas.microsoft.com/sqlserver/2004/07/adventure-works/StoreSurvey"><AnnualSales>800000</AnnualSales><AnnualRevenue>80000</AnnualRevenue><BankName>Primary Bank &amp; Reserve</BankName><BusinessType>BM</BusinessType><YearOpened>1999</YearOpened><Specialty>Road</Specialty><SquareFeet>21000</SquareFeet><Brands>2</Brands><Internet>DSL</Internet><NumberEmployees>15</NumberEmployees></StoreSurvey> 337C3688-1339-4E1A-A08A-B54B23566E49 2025-09-11 11:15:07.497
+              298             The Bike Mechanics            275 <StoreSurvey xmlns="http://schemas.microsoft.com/sqlserver/2004/07/adventure-works/StoreSurvey"><AnnualSales>800000</AnnualSales><AnnualRevenue>80000</AnnualRevenue><BankName>International Security</BankName><BusinessType>BM</BusinessType><YearOpened>1994</YearOpened><Specialty>Mountain</Specialty><SquareFeet>18000</SquareFeet><Brands>2</Brands><Internet>DSL</Internet><NumberEmployees>16</NumberEmployees></StoreSurvey> 7894F278-F0C8-4D16-BD75-213FDBF13023 2025-09-11 11:15:07.497
+              300              Nationwide Supply            286          <StoreSurvey xmlns="http://schemas.microsoft.com/sqlserver/2004/07/adventure-works/StoreSurvey"><AnnualSales>800000</AnnualSales><AnnualRevenue>80000</AnnualRevenue><BankName>Guardian Bank</BankName><BusinessType>BM</BusinessType><YearOpened>1987</YearOpened><Specialty>Touring</Specialty><SquareFeet>21000</SquareFeet><Brands>4+</Brands><Internet>DSL</Internet><NumberEmployees>17</NumberEmployees></StoreSurvey> C3FC9705-A8C4-4F3A-9550-EB2FA4B7B64D 2025-09-11 11:15:07.497
+
+==========================================================================================
+11. Sample rows: Production.Product
+==========================================================================================
+ ProductID                  Name ProductNumber  MakeFlag  FinishedGoodsFlag Color  SafetyStockLevel  ReorderPoint  StandardCost  ListPrice Size SizeUnitMeasureCode WeightUnitMeasureCode Weight  DaysToManufacture ProductLine Class Style ProductSubcategoryID ProductModelID SellStartDate SellEndDate DiscontinuedDate                              rowguid            ModifiedDate
+         1       Adjustable Race       AR-5381     False              False  None              1000           750           0.0        0.0 None                None                  None   None                  0        None  None  None                 None           None    2019-04-30        None             None 694215B7-08F7-4C0D-ACB1-D734BA44C0C8 2025-02-07 10:01:36.827
+         2          Bearing Ball       BA-8327     False              False  None              1000           750           0.0        0.0 None                None                  None   None                  0        None  None  None                 None           None    2019-04-30        None             None 58AE3C20-4F3A-4749-A7D4-D568806CC537 2025-02-07 10:01:36.827
+         3       BB Ball Bearing       BE-2349      True              False  None               800           600           0.0        0.0 None                None                  None   None                  1        None  None  None                 None           None    2019-04-30        None             None 9C21AED2-5BFA-4F18-BCB8-F11638DC2E4E 2025-02-07 10:01:36.827
+         4 Headset Ball Bearings       BE-2908     False              False  None               800           600           0.0        0.0 None                None                  None   None                  0        None  None  None                 None           None    2019-04-30        None             None ECFED6CB-51FF-49B5-B06C-7D8AC834DB8B 2025-02-07 10:01:36.827
+       316                 Blade       BL-2036      True              False  None               800           600           0.0        0.0 None                None                  None   None                  1        None  None  None                 None           None    2019-04-30        None             None E73E9750-603B-4131-89F5-3DD15ED5FF80 2025-02-07 10:01:36.827
+
+==========================================================================================
+11. Sample rows: Production.ProductSubcategory
+==========================================================================================
+ ProductSubcategoryID  ProductCategoryID            Name                              rowguid ModifiedDate
+                    1                  1  Mountain Bikes 2D364ADE-264A-433C-B092-4FCBF3804E01   2019-04-30
+                    2                  1      Road Bikes 000310C0-BCC8-42C4-B0C3-45AE611AF06B   2019-04-30
+                    3                  1   Touring Bikes 02C5061D-ECDC-4274-B5F1-E91D76BC3F37   2019-04-30
+                    4                  2      Handlebars 3EF2C725-7135-4C85-9AE6-AE9A3BDD9283   2019-04-30
+                    5                  2 Bottom Brackets A9E54089-8A1E-4CF5-8646-E3801F685934   2019-04-30
+
+==========================================================================================
+11. Sample rows: Production.ProductCategory
+==========================================================================================
+ ProductCategoryID        Name                              rowguid ModifiedDate
+                 1       Bikes CFBDA25C-DF71-47A7-B81B-64EE161AA37C   2019-04-30
+                 2  Components C657828D-D808-4ABA-91A3-AF2CE02300E9   2019-04-30
+                 3    Clothing 10A7C342-CA82-48D4-8A38-46A2EB089B74   2019-04-30
+                 4 Accessories 2BE3BE36-D9A2-4EEE-B593-ED895D97C2A6   2019-04-30
+
+==========================================================================================
+11. Sample rows: Sales.SalesTerritory
+==========================================================================================
+ TerritoryID      Name CountryRegionCode         Group     SalesYTD  SalesLastYear  CostYTD  CostLastYear                              rowguid ModifiedDate
+           1 Northwest                US North America 7.887187e+06   3298694.4938      0.0           0.0 43689A10-E30B-497F-B0DE-11DE20267FF7   2019-04-30
+           2 Northeast                US North America 2.402177e+06   3607148.9371      0.0           0.0 00FB7309-96CC-49E2-8363-0A1BA72486F2   2019-04-30
+           3   Central                US North America 3.072175e+06   3205014.0767      0.0           0.0 DF6E7FD8-1A8D-468C-B103-ED8ADDB452C1   2019-04-30
+           4 Southwest                US North America 1.051085e+07   5366575.7098      0.0           0.0 DC3E9EA0-7950-4431-9428-99DBCBC33865   2019-04-30
+           5 Southeast                US North America 2.538667e+06   3925071.4318      0.0           0.0 6DC4165A-5E4C-42D2-809D-4344E0AC75E7   2019-04-30
+
+==========================================================================================
+12. SQLAlchemy reflection of Sales.SalesOrderHeader (inspect(engine).get_columns)
+==========================================================================================
+                column                                                 type  nullable
+          SalesOrderID                                              INTEGER     False
+        RevisionNumber                                              TINYINT     False
+             OrderDate                                             DATETIME     False
+               DueDate                                             DATETIME     False
+              ShipDate                                             DATETIME      True
+                Status                                              TINYINT     False
+       OnlineOrderFlag                                                  BIT     False
+      SalesOrderNumber  NVARCHAR(25) COLLATE "SQL_Latin1_General_CP1_CI_AS"     False
+   PurchaseOrderNumber  NVARCHAR(25) COLLATE "SQL_Latin1_General_CP1_CI_AS"      True
+         AccountNumber  NVARCHAR(15) COLLATE "SQL_Latin1_General_CP1_CI_AS"      True
+            CustomerID                                              INTEGER     False
+         SalesPersonID                                              INTEGER      True
+           TerritoryID                                              INTEGER      True
+       BillToAddressID                                              INTEGER     False
+       ShipToAddressID                                              INTEGER     False
+          ShipMethodID                                              INTEGER     False
+          CreditCardID                                              INTEGER      True
+CreditCardApprovalCode   VARCHAR(15) COLLATE "SQL_Latin1_General_CP1_CI_AS"      True
+        CurrencyRateID                                              INTEGER      True
+              SubTotal                                                MONEY     False
+                TaxAmt                                                MONEY     False
+               Freight                                                MONEY     False
+              TotalDue                                                MONEY     False
+               Comment NVARCHAR(128) COLLATE "SQL_Latin1_General_CP1_CI_AS"      True
+               rowguid                                     UNIQUEIDENTIFIER     False
+          ModifiedDate                                             DATETIME     False
+[saved] outputs/reflection_salesorderheader.csv
